@@ -9,7 +9,7 @@ public class Calculator {
     String firstNum;
     String secondNum;
     String operation;
-    private Scanner sc;
+    private static Scanner sc;
     private static final String OPERATION_REG = "[+\\-*/]";
 
     public void start(){
@@ -28,7 +28,7 @@ public class Calculator {
 
                 //연산자
                 System.out.print("연산자 입력 (+, -, *, /) : ");
-                String operation = sc.nextLine();
+                operation = sc.nextLine();
                 validateInput(operation, "operation");
                 showInputHistory();
 
@@ -54,7 +54,7 @@ public class Calculator {
     }
 
     public void end(){
-        System.out.println("계산기를 종료합니다");
+        System.out.println("***************계산기를 종료합니다***************");
         reset();
         sc.close();
     }
@@ -68,12 +68,12 @@ public class Calculator {
     //입력 내역 출력
     public void showInputHistory() {
         String str = "[입력 내역 : ";
-        if (firstNum != null) {
-            str += firstNum;
-            if (operation != null) {
-                str += (" " + operation);
-                if (secondNum != null) {
-                    str += (" " + secondNum);
+        if (this.firstNum != null) {
+            str += this.firstNum;
+            if (this.operation != null) {
+                str += (" " + this.operation);
+                if (this.secondNum != null) {
+                    str += (" " + this.secondNum);
                 }
             }
         }
@@ -88,7 +88,7 @@ public class Calculator {
     //연산자 검증
     public void validateOperation(String operation) throws IllegalStateException{
         if(!Pattern.matches(OPERATION_REG, operation))
-            throw new IllegalStateException("올바른 기본 연산자를 입력해주세요 (기본 연산자 : +, -, *, /) : ");
+            throw new IllegalStateException("올바른 기본 연산자를 입력해주세요 (기본 연산자 : +, -, *, /)");
     }
 
 
