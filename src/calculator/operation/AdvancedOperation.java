@@ -7,7 +7,7 @@ import java.util.stream.LongStream;
 <고급 연산>
 
 제곱근(√x)
-거듭 제곱 (x^y)
+거듭 제곱 (x^y) -> 얘만 이항 연산자
 팩토리얼 (x!)
 제곱 (x^2)
 * */
@@ -53,7 +53,7 @@ public enum AdvancedOperation {
         return Arrays.stream(values())
                 .filter(o -> o.symbol.equals(symbol))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("올바른 고급 연산자를 입력해주세요 (고급 연산자 : √, ^, !, **) : " + symbol);)
+                .orElseThrow(() -> new IllegalStateException("올바른 고급 연산자를 입력해주세요 (고급 연산자 : √, ^, !, **) : " + symbol));
     }
 
     private static long factorial(int a){
