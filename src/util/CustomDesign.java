@@ -8,6 +8,7 @@ public class CustomDesign {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
 
+    public static final String ANSI_PINK = "\u001B[35m";
 
     public static void printWelcomeMessage() {
         System.out.println(ANSI_YELLOW);
@@ -31,4 +32,5 @@ public class CustomDesign {
         System.out.println(ANSI_CYAN + "============================================" + ANSI_RESET);
         System.out.println();
     }
+
 }
