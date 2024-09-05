@@ -117,28 +117,19 @@ public class Calculator {
         Number a = parseNumber(firstNum);
         Number b = parseNumber(secondNum);
 
-        if(operation.equals("+")){
-            if(a instanceof Double || b instanceof Double)
-                return a.doubleValue() + b.doubleValue();
-            else
-                return a.longValue() + b.longValue();
-        }
-        else if(operation.equals("-")){
-            if(a instanceof Double || b instanceof Double)
-                return a.doubleValue() - b.doubleValue();
-            else
-                return a.longValue() - b.longValue();
-        }
-        else if(operation.equals("*")){
-            if(a instanceof Double || b instanceof Double)
-                return a.doubleValue() * b.doubleValue();
-            else
-                return a.longValue() * b.longValue();
-        }
-        else{
-            if(b.doubleValue()==0) throw new ArithmeticException("0으로 나눌 수 없습니다");
-            return a.doubleValue() / b.doubleValue();
-        }
+        return switch (operation) {
+            case "+" -> (a instanceof Double || b instanceof Double) ?
+                    a.doubleValue() + b.doubleValue() : a.longValue() + b.longValue();
+            case "-" -> (a instanceof Double || b instanceof Double) ?
+                    a.doubleValue() - b.doubleValue() : a.longValue() - b.longValue();
+            case "*" -> (a instanceof Double || b instanceof Double) ?
+                    a.doubleValue() * b.doubleValue() : a.longValue() * b.longValue();
+            case "/" -> {
+                if (b.doubleValue() == 0) throw new ArithmeticException("0으로 나눌 수 없습니다");
+                yield a.doubleValue() / b.doubleValue();
+            }
+            default -> throw new IllegalStateException("올바른 연산자가 아닙니다");
+        };
     }
 
     //피연산자 String -> 숫자(정수/실수)로 파싱
