@@ -3,12 +3,14 @@ import ex.ExitException;
 import util.CustomDesign;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Calculator {
     String firstNum;
     String secondNum;
-    BasicOperation basicOperation;
+    String operation;
     private Scanner sc;
+    private static final String OPERATION_REG = "[+\\-*/]";
 
     public void start(){
         CustomDesign.printWelcomeMessage();
@@ -60,7 +62,7 @@ public class Calculator {
     public void reset(){
         firstNum = "";
         secondNum = "";
-        basicOperation = null;
+        operation = null;
     }
 
     //입력 내역 출력
@@ -68,8 +70,8 @@ public class Calculator {
         String str = "[입력 내역 : ";
         if (firstNum != null) {
             str += firstNum;
-            if (basicOperation != null) {
-                str += (" " + basicOperation.getSymbol());
+            if (operation != null) {
+                str += (" " + operation);
                 if (secondNum != null) {
                     str += (" " + secondNum);
                 }
@@ -85,8 +87,10 @@ public class Calculator {
 
     //연산자 검증
     public void validateOperation(String operation) throws IllegalStateException{
-        basicOperation = BasicOperation.getBasicOperation(operation);
+        if(!Pattern.matches(OPERATION_REG, operation))
+            throw new IllegalStateException("올바른 기본 연산자를 입력해주세요 (기본 연산자 : +, -, *, /) : ");
     }
+
 
     //피연산자 검증
     public void validateOperand(String operand){
@@ -110,7 +114,31 @@ public class Calculator {
 
     //계산 -> 기본 산술 연산 수행
     private Number calculate(){
-        return basicOperation.calculate(parseNumber(firstNum),parseNumber(secondNum));
+        Number a = parseNumber(firstNum);
+        Number b = parseNumber(secondNum);
+
+        if(operation.equals("+")){
+            if(a instanceof Double || b instanceof Double)
+                return a.doubleValue() + b.doubleValue();
+            else
+                return a.longValue() + b.longValue();
+        }
+        else if(operation.equals("-")){
+            if(a instanceof Double || b instanceof Double)
+                return a.doubleValue() - b.doubleValue();
+            else
+                return a.longValue() - b.longValue();
+        }
+        else if(operation.equals("*")){
+            if(a instanceof Double || b instanceof Double)
+                return a.doubleValue() * b.doubleValue();
+            else
+                return a.longValue() * b.longValue();
+        }
+        else{
+            if(b.doubleValue()==0) throw new ArithmeticException("0으로 나눌 수 없습니다");
+            return a.doubleValue() / b.doubleValue();
+        }
     }
 
     //피연산자 String -> 숫자(정수/실수)로 파싱
