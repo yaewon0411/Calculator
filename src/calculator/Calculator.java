@@ -1,3 +1,5 @@
+package calculator;
+
 import ex.ExitException;
 import util.CustomDesign;
 

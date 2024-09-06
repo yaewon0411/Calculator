@@ -93,17 +93,17 @@ public class Main {
                 }
             }
 
-            // 종료
+            //종료
             System.out.println("***************계산기를 종료합니다***************");
             sc.close();
         }
 
-        // 모드가 고급일 경우 단항 연산자인지 확인
+        //모드가 고급일 경우 단항 연산자인지 확인
         private static boolean isUnaryOperation(String operation, String mode) {
             return mode.equals("advanced") && !operation.equals("^");
         }
 
-        // 입력 내역 출력
+        //입력 내역 출력
         private static void printInputHistory(String firstNum, String operation, String secondNum) {
             String str = "[입력 내역 : " + firstNum;
             if (!operation.isEmpty()) str += " " + operation;
@@ -111,7 +111,7 @@ public class Main {
             System.out.println(CustomDesign.ANSI_GREEN +str + " ]" + CustomDesign.ANSI_RESET);
         }
 
-        // 연산 모드 전환
+        //연산 모드 전환 -> 전환 시 안내 문구 출력
         private static boolean validateInput(String input, String type, String mode) throws IllegalArgumentException {
             if ("exit".equalsIgnoreCase(input)) throw new ExitException();
 
@@ -141,7 +141,7 @@ public class Main {
             return false;
         }
 
-        // 계산 수행
+        //계산 수행
         private static Number calculate(String firstNum, String secondNum, String operation, String mode) {
             Number a = parseNumber(firstNum);
             Number b;
@@ -173,7 +173,7 @@ public class Main {
             }
         }
 
-        // 피연산자 파싱
+        //피연산자 파싱
         private static Number parseNumber(String num) {
             return num.contains(".") ? Double.parseDouble(num) : Long.parseLong(num);
         }
