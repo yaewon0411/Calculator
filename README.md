@@ -26,7 +26,7 @@
   - 나눗셈 : /
 - 예외 처리
   - 0으로 나누기: "0으로 나눌 수 없습니다" 오류 발생
-- 입력 ㅌ`예시
+- 입력 예시
 ```text
 숫자 입력 : 5
 [입력 내역 : 5 ]
@@ -77,4 +77,20 @@
 ```text
 숫자 입력 : exit
 *************** 계산기를 종료합니다 ***************
+```
+
+
+
+### 기록
+#### 1) ENUM 클래스의 values()
+- enum 클래스에 자동으로 생성되는 메서드
+- enum 타입의 모든 상수를 배열로 반환 -> 즉, 해당 enum 클래스가 정의한 모든 상수들을 배열로 만들어 제공
+- Arrays.stream(values()) 를 통해 values()가 반환한 배열을 스트림으로 변환한 후 enum 상수 필터링 가능
+```java
+public static AdvancedOperation getAdvancedOperation(String symbol){
+    return Arrays.stream(values())
+            .filter(o -> o.symbol.equals(symbol))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("올바른 고급 연산자를 입력해주세요 (고급 연산자 : √, ^, !, **) : " + symbol));
+}
 ```

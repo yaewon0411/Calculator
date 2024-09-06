@@ -1,6 +1,6 @@
 package util;
 
-import calculator.operation.AdvancedOperation;
+import test.AdvancedOperation;
 
 public class CustomDesign {
 
