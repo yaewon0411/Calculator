@@ -3,12 +3,15 @@ package calculator.operation;
 import ex.ExitException;
 import util.CustomDesign;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Calculator {
     private CalculatorState calculatorState;
     private static Scanner sc;
     private OperationStrategy operationStrategy;
+    private boolean isHistoryMode; //연산 결과 내역 보기
+
     public Calculator() {
         operationStrategy = new OperationStrategy();
         calculatorState = new CalculatorState();
@@ -19,11 +22,19 @@ public class Calculator {
     public void start() {
         CustomDesign.printWelcomeMessage();
         CustomDesign.printBasicOperations();
+        isHistoryMode = false;
         run();
     }
 
     //계산기 전체 입력 처리
     private boolean handleInput(){ //모드 변환 or 입력을 다 받으면 true 리턴해서 while 반복문 다시 돌아가도록
+
+        if(isHistoryMode){ //연산 기록을 보고 있는 상태라면
+            String input = sc.nextLine();
+            validateInput(input, null);
+            return true;
+        }
+
         printInputHistory();
 
         if(calculatorState.getFirstNum()== null)
@@ -67,7 +78,6 @@ public class Calculator {
         while(true) {
             try {
                 if(handleInput()) continue; //모드 변환 시 다시 시작
-
                 //계산
                 if(calculatorState.isReadyToCalculate(operationStrategy)) {
                     printInputHistory();
@@ -76,7 +86,7 @@ public class Calculator {
                     reset();
                 }
             }catch(ExitException e){
-                calculatorState.removeHistory();
+                calculatorState.clearAllHistory();
                 break;
             }catch(Exception e) {
                 handleError(e);
@@ -95,7 +105,7 @@ public class Calculator {
     private void end(){
         System.out.println("***************계산기를 종료합니다***************");
         reset();
-        calculatorState.removeHistory();
+        calculatorState.clearAllHistory();
         sc.close();
     }
 
@@ -154,12 +164,31 @@ public class Calculator {
         reset();
     }
 
-    //입력값 검증 -> 연산자 & 피연산자 검증 & 모드 변경 시 true 반환
+    private boolean isHistory(String input){
+        return "history".equalsIgnoreCase(input);
+    }
+    private void printAllHistory(){
+        CustomDesign.printAllHistory(calculatorState);
+    }
+
+    //입력값 검증 -> 연산자 & 피연산자 검증 & 모드 변경 시 & history 입력 시 true 반환
     private boolean validateInput(String input, String type) throws IllegalArgumentException {
         if (isExit(input)) throw new ExitException();
 
         if(isAdvanced(input) || isBasic(input)) {
+            isHistoryMode = false;
             switchMode(input);
+            return true;
+        }
+
+        if(isHistory(input)){ //만약 history를 쳤다면 -> 연산 내역 보여주도록
+            printAllHistory();
+            isHistoryMode = true;
+            return true;
+        }
+
+        if(isHistoryMode && "remove".equalsIgnoreCase(input)){
+            handleHistoryRemove();
             return true;
         }
 
@@ -169,6 +198,12 @@ public class Calculator {
             validateOperation(input);
 
         return false;
+    }
+
+    //가장 오래된 연산 결과 삭제 후 다시 내역 출력
+    private void handleHistoryRemove(){
+        calculatorState.removeOldestResult();
+        CustomDesign.printAllHistory(calculatorState);
     }
 
     //계산

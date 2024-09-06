@@ -46,8 +46,15 @@ public class CalculatorState {
         operation = null;
         secondNum = null;
     }
-    public void removeHistory(){
-        this.calculatedResults = null;
+    //모든 연산 결과 삭제
+    public void clearAllHistory(){
+        this.calculatedResults.clear();
+    }
+    // 가장 먼저 저장된 연산 결과 삭제
+    public void removeOldestResult() {
+        if (!calculatedResults.isEmpty()) {
+            calculatedResults.remove(0);
+        }
     }
     public boolean isReadyToCalculate(OperationStrategy operationStrategy){
         return firstNum != null

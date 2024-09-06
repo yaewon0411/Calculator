@@ -1,6 +1,9 @@
 package util;
 
+import calculator.operation.CalculatorState;
 import test.AdvancedOperation;
+
+import java.util.List;
 
 public class CustomDesign {
 
@@ -63,6 +66,28 @@ public class CustomDesign {
             case SQUARE: return "제곱";
             default: return "";
         }
+    }
+
+    public static void printAllHistory(CalculatorState state) {
+        System.out.println(CustomDesign.ANSI_CYAN + "========== 연산 기록 ==========");
+        List<Number> history = state.getCalculatedResults();
+        if (history.isEmpty()) {
+            System.out.println("저장된 연산 결과가 없습니다.");
+        } else {
+            System.out.println("저장된 연산 결과는 다음과 같습니다:");
+            for (int i = 0; i < history.size(); i++) {
+                System.out.printf("%d. %s\n", i + 1, history.get(i));
+            }
+        }
+        System.out.println(CustomDesign.ANSI_YELLOW+"================================");
+        System.out.println("사용 가능한 명령어:");
+        System.out.println("- 'remove': 가장 오래된 연산 결과를 삭제합니다.");
+        System.out.println("- 'basic': 기본 산술 연산 모드로 전환합니다.");
+        System.out.println("- 'advanced': 고급 산술 연산 모드로 전환합니다.");
+        System.out.println("- 'exit': 계산기를 종료합니다.");
+        System.out.println("================================" + CustomDesign.ANSI_RESET);
+
+        System.out.print("명령어를 입력하세요: ");
     }
 
 }
