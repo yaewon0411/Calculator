@@ -1,6 +1,6 @@
 package util;
 
-import calculator.operation.CalculatorState;
+import calculator.CalculatorState;
 import test.AdvancedOperation;
 
 import java.util.List;

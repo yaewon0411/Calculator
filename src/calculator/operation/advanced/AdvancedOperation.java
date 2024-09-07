@@ -1,7 +1,10 @@
 package calculator.operation.advanced;
 
 import calculator.operation.Operation;
+import calculator.operation.OperationMode;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.LongStream;
 
@@ -17,12 +20,26 @@ public class AdvancedOperation implements Operation {
     private String symbol;
     private BiFunction<Number, Number, Number> operation;
 
+    private final Map<String, Operation> operations = new HashMap<>();
+
     private boolean isUnary; //단항 연산자이면 true, 아니면 false
 
-    public AdvancedOperation(String symbol, BiFunction<Number, Number, Number> operation, boolean isUnary) {
+    public AdvancedOperation() {
+        operations.put(SQUARE.getSymbol(), SQUARE);
+        operations.put(SQUARE_ROOT.getSymbol(), SQUARE_ROOT);
+        operations.put(POWER.getSymbol(), POWER);
+        operations.put(FACTORIAL.getSymbol(), FACTORIAL);
+    }
+
+    private AdvancedOperation(String symbol, BiFunction<Number, Number, Number> operation, boolean isUnary) {
         this.symbol = symbol;
         this.operation = operation;
         this.isUnary = isUnary;
+    }
+
+    @Override
+    public Map<String, Operation> getOperations() {
+        return this.operations;
     }
 
     @Override
@@ -61,4 +78,5 @@ public class AdvancedOperation implements Operation {
     }, true);
 
     public static final AdvancedOperation SQUARE = new AdvancedOperation("**", (a,b) -> Math.pow(a.doubleValue(), 2), true);
+
 }

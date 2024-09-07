@@ -1,9 +1,12 @@
-package calculator.operation;
+package calculator;
 
+import calculator.operation.OperationMode;
+import calculator.operation.OperationStrategy;
+import calculator.operation.advanced.AdvancedOperation;
+import calculator.operation.basic.BasicOperation;
 import ex.ExitException;
 import util.CustomDesign;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Calculator {
@@ -155,10 +158,10 @@ public class Calculator {
     //모드 변경 -> 이전 입력 초기화
     private void switchMode(String newMode) {
         if (isAdvanced(newMode)) {
-            operationStrategy.setMode(OperationMode.ADVANCED);
+            operationStrategy.setOperation(new AdvancedOperation());
             CustomDesign.printAdvancedOperations();
         } else if (isBasic(newMode)) {
-            operationStrategy.setMode(OperationMode.BASIC);
+            operationStrategy.setOperation(new BasicOperation());
             CustomDesign.printBasicOperations();
         }
         reset();
@@ -210,7 +213,7 @@ public class Calculator {
     private Number calculate(){
         Number a = parseNumber(calculatorState.getFirstNum());
         Number b = operationStrategy.isUnary(calculatorState.getOperation())?null:parseNumber(calculatorState.getSecondNum());
-        Number result = operationStrategy.getOperation(calculatorState.getOperation()).calculate(a, b);
+        Number result = operationStrategy.calculate(calculatorState.getOperation(), a, b);
         //계산 결과 저장
         calculatorState.getCalculatedResults().add(result);
         return result;
