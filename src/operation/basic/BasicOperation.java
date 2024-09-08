@@ -1,10 +1,8 @@
-package calculator.operation.basic;
+package operation.basic;
 
-import calculator.operation.Operation;
-import calculator.operation.OperationMode;
+import operation.Operation;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -35,7 +33,6 @@ public class BasicOperation implements Operation {
     public Map<String, Operation> getOperations() {
         return this.operations;
     }
-
 
     @Override
     public Number calculate(Number a, Number b) {

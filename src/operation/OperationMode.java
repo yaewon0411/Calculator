@@ -1,4 +1,4 @@
-package calculator.operation;
+package operation;
 
 public enum OperationMode {
     BASIC, ADVANCED;

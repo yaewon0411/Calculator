@@ -1,7 +1,6 @@
 package calculator;
 
-import calculator.operation.Operation;
-import calculator.operation.OperationStrategy;
+import operation.OperationStrategy;
 
 import java.util.ArrayList;
 import java.util.List;

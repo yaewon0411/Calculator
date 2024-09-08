@@ -1,7 +1,6 @@
-package calculator.operation.advanced;
+package operation.advanced;
 
-import calculator.operation.Operation;
-import calculator.operation.OperationMode;
+import operation.Operation;
 
 import java.util.HashMap;
 import java.util.Map;

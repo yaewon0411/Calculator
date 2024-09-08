@@ -1,9 +1,9 @@
 package calculator;
 
-import calculator.operation.OperationMode;
-import calculator.operation.OperationStrategy;
-import calculator.operation.advanced.AdvancedOperation;
-import calculator.operation.basic.BasicOperation;
+import operation.OperationMode;
+import operation.OperationStrategy;
+import operation.advanced.AdvancedOperation;
+import operation.basic.BasicOperation;
 import ex.ExitException;
 import util.CustomDesign;
 
@@ -130,10 +130,9 @@ public class Calculator {
 
     //연산자 검증
     private void validateOperation(String operation){
-        if(operationStrategy.getOperation(operation)==null) throw new IllegalStateException("존재하지 않는 연산자 입니다");
+        if(operationStrategy.getOperation(operation)==null) throw new IllegalArgumentException("존재하지 않는 연산자 입니다");
         calculatorState.setOperation(operation);
     }
-
 
     //피연산자 검증
     private void validateOperand(String operand){
@@ -190,7 +189,7 @@ public class Calculator {
             return true;
         }
 
-        if(isHistoryMode && "remove".equalsIgnoreCase(input)){
+        if(isHistoryMode && "remove".equalsIgnoreCase(input)){ //history 모드에서 remove를 입력하면 가장 오래전 결과 삭제
             handleHistoryRemove();
             return true;
         }
