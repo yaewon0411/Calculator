@@ -5,7 +5,7 @@ import operation.OperationStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculatorState {
+public class CalculatorState{
     private String firstNum;
     private String operation;
     private String secondNum;
@@ -51,10 +51,12 @@ public class CalculatorState {
     }
 
     // 가장 먼저 저장된 연산 결과 삭제
-    public void removeOldestResult() {
+    public boolean removeOldestResult() {
         if (!calculatedResults.isEmpty()) {
             calculatedResults.remove(0);
+            return true;
         }
+        else return false;
     }
 
     //입력으로 받은 값보다 큰 결과 값들 출력

@@ -6,18 +6,16 @@ import operation.advanced.AdvancedOperation;
 import operation.basic.BasicOperation;
 import ex.ExitException;
 import util.CustomDesign;
-
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
-public class Calculator {
-    private CalculatorState calculatorState;
-    private static Scanner sc;
-    private OperationStrategy operationStrategy;
+public class Calculator<T extends Number> {
+    private CalculatorState calculatorState; //계산기 현재 상태 관리
+    private static Scanner sc;//스캐너
+    private OperationStrategy<T> operationStrategy; //연산 전략 관리
     private boolean isHistoryMode; //연산 결과 내역 보기
 
     public Calculator() {
-        operationStrategy = new OperationStrategy();
+        operationStrategy = new OperationStrategy<>();
         calculatorState = new CalculatorState();
         sc = new Scanner(System.in);
     }
@@ -79,7 +77,7 @@ public class Calculator {
         return false;
     }
     //실제 작동
-    private void run(){
+    private <T extends Number>void run(){
         while(true) {
             try {
                 if(handleInput()) continue; //모드 변환 시 다시 시작
@@ -146,7 +144,6 @@ public class Calculator {
         try {
             Double.parseDouble(operand);
         } catch (NumberFormatException e) {
-            operand = "";
             throw new IllegalArgumentException("올바른 숫자를 입력해주세요");
         }
     }
@@ -164,10 +161,10 @@ public class Calculator {
     //모드 변경 -> 이전 입력 초기화
     private void switchMode(String newMode) {
         if (isAdvanced(newMode)) {
-            operationStrategy.setOperation(new AdvancedOperation());
+            operationStrategy.setOperation(new AdvancedOperation<>());
             CustomDesign.printAdvancedOperations();
         } else if (isBasic(newMode)) {
-            operationStrategy.setOperation(new BasicOperation());
+            operationStrategy.setOperation(new BasicOperation<>());
             CustomDesign.printBasicOperations();
         }
         reset();
@@ -224,21 +221,22 @@ public class Calculator {
             double threshold = Double.parseDouble(input);
             CustomDesign.printResultsGreaterThan(calculatorState.getResultsGreaterThan(threshold), threshold);
         }catch (NumberFormatException e){
-            throw new IllegalStateException("올바른 숫자를 입력해주세요");
+            throw new NumberFormatException("올바른 숫자를 입력해주세요");
         }
     }
 
     //가장 오래된 연산 결과 삭제 후 다시 내역 출력
     private void handleHistoryRemove(){
-        calculatorState.removeOldestResult();
-        System.out.println("삭제 되었습니다.");
+        boolean isRemoved = calculatorState.removeOldestResult();
+        if(isRemoved) System.out.println("삭제 되었습니다.");
+        else System.out.println("삭제할 연산 결과가 없습니다.");
         CustomDesign.printAllHistory(calculatorState);
     }
 
     //계산
     private Number calculate(){
-        Number a = parseNumber(calculatorState.getFirstNum());
-        Number b = operationStrategy.isUnary(calculatorState.getOperation())?null:parseNumber(calculatorState.getSecondNum());
+        T a = parseNumber(calculatorState.getFirstNum());
+        T b = operationStrategy.isUnary(calculatorState.getOperation())?null:parseNumber(calculatorState.getSecondNum());
         Number result = operationStrategy.calculate(calculatorState.getOperation(), a, b);
         //계산 결과 저장
         calculatorState.getCalculatedResults().add(result);
@@ -246,14 +244,14 @@ public class Calculator {
     }
 
     //피연산자 String -> 숫자(정수/실수)로 파싱
-    private Number parseNumber(String num) {
-        if (num.contains("."))
-            return Double.parseDouble(num);
-        else {
+    private T parseNumber(String num) {
+        if (num.contains(".")) {
+            return (T) Double.valueOf(num);
+        } else {
             try {
-                return Long.parseLong(num);
+                return (T) Long.valueOf(num);
             } catch (NumberFormatException e) {
-                return Double.parseDouble(num);
+                return (T) Double.valueOf(num);
             }
         }
     }
@@ -261,8 +259,8 @@ public class Calculator {
     //계산 결과
     private void printCalculateResult(Number result) {
         System.out.printf(CustomDesign.ANSI_PINK + "========= 계산 결과 : %s =========\n"+CustomDesign.ANSI_RESET,
-                (result.doubleValue() == result.intValue()) ?
-                        String.valueOf(result.intValue()) :
+                (result.doubleValue() == result.longValue()) ?
+                        String.valueOf(result.longValue()) :
                         String.valueOf(result.doubleValue()));
     }
 

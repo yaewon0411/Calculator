@@ -2,23 +2,23 @@ package operation;
 
 import operation.basic.BasicOperation;
 
-public class OperationStrategy {
+public class OperationStrategy<T extends Number> {
 
-    private Operation operation;
+    private Operation<T> operation;
 
     public OperationStrategy() {
-        operation = new BasicOperation(); //디폴트는 기본 산술 연산
+        operation = new BasicOperation<T>(); //디폴트는 기본 산술 연산
     }
 
-    public OperationStrategy(Operation operation){
+    public OperationStrategy(Operation<T> operation){
         this.operation = operation;
     }
     //연산 전략의 symbol(ex;ADD)연산 가져오기
-    public Operation getOperation(String symbol){
+    public Operation<T> getOperation(String symbol){
         return operation.getOperations().get(symbol);
     }
     //연사 전략 설정
-    public void setOperation(Operation operation){
+    public void setOperation(Operation<T> operation){
         this.operation = operation;
     }
 
@@ -28,7 +28,7 @@ public class OperationStrategy {
     }
 
     //연산 수행
-    public Number calculate(String symbol, Number a, Number b){
+    public T calculate(String symbol, T a, T b){
         return getOperation(symbol).calculate(a,b);
     }
 

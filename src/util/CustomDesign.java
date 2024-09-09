@@ -91,14 +91,18 @@ public class CustomDesign {
         //System.out.print("명령어를 입력하세요: ");
     }
 
-    public static void printResultsGreaterThan(List<Number> history, double threshold) {
+    public static <T extends Number> void printResultsGreaterThan(List<T> history, double threshold) {
         System.out.println(ANSI_CYAN + "======== " + threshold + "보다 큰 연산 결과 ========");
         if (history.isEmpty()) {
             System.out.println(threshold + "보다 큰 연산 결과가 없습니다.");
         }
         else{
-            for (int i = 0; i < history.size(); i++)
-                System.out.printf("%d. %s\n", i + 1, history.get(i));
+            for (int i = 0; i < history.size(); i++){
+                T value = history.get(i);
+                if(value instanceof Double) System.out.printf("%d. %s\n", i + 1, value.doubleValue());
+                else System.out.printf("%d. %s\n", i + 1, value.toString());
+
+            }
         }
         System.out.println(ANSI_CYAN + "================================" + ANSI_RESET);
     }
