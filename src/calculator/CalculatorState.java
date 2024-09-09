@@ -49,12 +49,21 @@ public class CalculatorState {
     public void clearAllHistory(){
         this.calculatedResults.clear();
     }
+
     // 가장 먼저 저장된 연산 결과 삭제
     public void removeOldestResult() {
         if (!calculatedResults.isEmpty()) {
             calculatedResults.remove(0);
         }
     }
+
+    //입력으로 받은 값보다 큰 결과 값들 출력
+    public List<Number> getResultsGreaterThan(double threshold){
+        return calculatedResults.stream()
+                .filter(r -> r.doubleValue() > threshold)
+                .toList();
+    }
+
     //계산에 필요한 피연산자와 연산자를 입력받았는지 검증
     public boolean isReadyToCalculate(OperationStrategy operationStrategy){
         return firstNum != null

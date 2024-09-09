@@ -69,7 +69,7 @@ public class CustomDesign {
     }
 
     public static void printAllHistory(CalculatorState state) {
-        System.out.println(CustomDesign.ANSI_CYAN + "========== 연산 기록 ==========");
+        System.out.println(ANSI_CYAN + "========== 연산 기록 ==========");
         List<Number> history = state.getCalculatedResults();
         if (history.isEmpty()) {
             System.out.println("저장된 연산 결과가 없습니다.");
@@ -79,15 +79,40 @@ public class CustomDesign {
                 System.out.printf("%d. %s\n", i + 1, history.get(i));
             }
         }
-        System.out.println(CustomDesign.ANSI_YELLOW+"================================");
+        System.out.println(ANSI_YELLOW+"================================");
         System.out.println("사용 가능한 명령어:");
         System.out.println("- 'remove': 가장 오래된 연산 결과를 삭제합니다.");
         System.out.println("- 'basic': 기본 산술 연산 모드로 전환합니다.");
         System.out.println("- 'advanced': 고급 산술 연산 모드로 전환합니다.");
+        System.out.println("- 'greater': 특정 값보다 큰 연산 결과를 출력합니다.");
         System.out.println("- 'exit': 계산기를 종료합니다.");
-        System.out.println("================================" + CustomDesign.ANSI_RESET);
+        System.out.println("================================" + ANSI_RESET);
 
-        System.out.print("명령어를 입력하세요: ");
+        //System.out.print("명령어를 입력하세요: ");
+    }
+
+    public static void printResultsGreaterThan(List<Number> history, double threshold) {
+        System.out.println(ANSI_CYAN + "======== " + threshold + "보다 큰 연산 결과 ========");
+        if (history.isEmpty()) {
+            System.out.println(threshold + "보다 큰 연산 결과가 없습니다.");
+        }
+        else{
+            for (int i = 0; i < history.size(); i++)
+                System.out.printf("%d. %s\n", i + 1, history.get(i));
+        }
+        System.out.println(ANSI_CYAN + "================================" + ANSI_RESET);
+    }
+
+    public static void printExitMessage() {
+        System.out.println(ANSI_CYAN);
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("┃                                                  ┃");
+        System.out.println("┃  " + ANSI_YELLOW + "감사합니다! 계산기 프로그램을 종료합니다." + ANSI_CYAN + "              ┃");
+        System.out.println("┃                                                  ┃");
+        System.out.println("┃  " + ANSI_GREEN + "안녕히 가세요! 좋은 하루 되세요!" + ANSI_CYAN + "                     ┃");
+        System.out.println("┃                                                  ┃");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        System.out.println(ANSI_RESET);
     }
 
 }

@@ -7,6 +7,7 @@ import operation.basic.BasicOperation;
 import ex.ExitException;
 import util.CustomDesign;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Calculator {
@@ -33,7 +34,8 @@ public class Calculator {
     private boolean handleInput(){ //모드 변환 or 입력을 다 받으면 true 리턴해서 while 반복문 다시 돌아가도록
 
         if(isHistoryMode){ //연산 기록을 보고 있는 상태라면
-            String input = sc.nextLine();
+            System.out.print("명령어를 입력하세요 : ");
+            String input = sc.nextLine().trim();
             validateInput(input, null);
             return true;
         }
@@ -54,7 +56,7 @@ public class Calculator {
     //입력 중 연산자 처리
     private boolean handleOperationInput(){
         System.out.print("연산자 입력 : ");
-        String operation = sc.nextLine();
+        String operation = sc.nextLine().trim();
         boolean modeChanged = validateInput(operation, "operation");
         if(modeChanged){
             reset();
@@ -65,7 +67,7 @@ public class Calculator {
     //입력 중 피연산자 처리
     private boolean handleOperandInput(String order){
         System.out.print(order+" 숫자 입력 : ");
-        String input = sc.nextLine();
+        String input = sc.nextLine().trim();
         boolean modeChanged = validateInput(input, "operand");
         if(modeChanged){
             reset();
@@ -111,7 +113,7 @@ public class Calculator {
 
     //계산기 종료
     private void end(){
-        System.out.println("***************계산기를 종료합니다***************");
+        CustomDesign.printExitMessage();
         reset();
         calculatorState.clearAllHistory();
         sc.close();
@@ -199,20 +201,37 @@ public class Calculator {
                 handleHistoryRemove();
                 return true;
             }
+            else if("greater".equalsIgnoreCase(input)){ //history 모드에서 입력한 값보다 큰 결과를 보기 원할 때
+                handleGreaterThan();
+                return true;
+            }
             else throw new IllegalArgumentException("올바른 명령어를 입력해주세요");
         }
 
-        if (type.equals("operand"))
-            validateOperand(input);
-        else if (type.equals("operation"))
-            validateOperation(input);
+        if(type != null) {
+            if (type.equals("operand"))
+                validateOperand(input);
+            else if (type.equals("operation"))
+                validateOperation(input);
+        }
 
         return false;
+    }
+    private void handleGreaterThan(){
+        System.out.print("숫자를 입력해주세요 : ");
+        String input = sc.nextLine().trim();
+        try {
+            double threshold = Double.parseDouble(input);
+            CustomDesign.printResultsGreaterThan(calculatorState.getResultsGreaterThan(threshold), threshold);
+        }catch (NumberFormatException e){
+            throw new IllegalStateException("올바른 숫자를 입력해주세요");
+        }
     }
 
     //가장 오래된 연산 결과 삭제 후 다시 내역 출력
     private void handleHistoryRemove(){
         calculatorState.removeOldestResult();
+        System.out.println("삭제 되었습니다.");
         CustomDesign.printAllHistory(calculatorState);
     }
 
