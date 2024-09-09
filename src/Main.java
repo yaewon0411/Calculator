@@ -8,8 +8,8 @@ import java.util.stream.LongStream;
 public class Main {
     private static final String BASIC = "basic";
     private static final String ADVANCED = "advanced";
-    private static final String BASIC_OPERATION_REG = "[+\\-*/]";
-    private static final String ADVANCED_OPERATION_REG = "[√^!]|\\*\\*";
+    private static final String BASIC_OPERATION_REG = "[+\\-*/]"; //기본 산술 연산 정규 표현식
+    private static final String ADVANCED_OPERATION_REG = "[√^!]|\\*\\*"; //고급 산술 연산 정규 표현식
     public static void main(String[] args) {
             String firstNum = "";
             String secondNum = "";
@@ -17,6 +17,7 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             String mode = BASIC;
 
+            //시작 메시지 및 기본 산술 모드에서 지원하는 연산자 출력
             CustomDesign.printWelcomeMessage();
             CustomDesign.printBasicOperations();
 
@@ -91,7 +92,7 @@ public class Main {
             }
 
             //종료
-            System.out.println("***************계산기를 종료합니다***************");
+            CustomDesign.printExitMessage();
             sc.close();
         }
 
@@ -176,9 +177,9 @@ public class Main {
         }
 
         // ======기본 산술 연산======
-        private static Number add(Number a, Number b) { return a.doubleValue() + b.doubleValue(); }
-        private static Number subtract(Number a, Number b) { return a.doubleValue() - b.doubleValue(); }
-        private static Number multiply(Number a, Number b) { return a.doubleValue() * b.doubleValue(); }
+        private static Number add(Number a, Number b) { return (a instanceof Double || b instanceof Double)? a.doubleValue() + b.doubleValue() : a.longValue() + b.longValue(); }
+        private static Number subtract(Number a, Number b) { return (a instanceof Double || b instanceof Double)? a.doubleValue() - b.doubleValue() : a.longValue() - b.longValue(); }
+        private static Number multiply(Number a, Number b) {  return (a instanceof Double || b instanceof Double)? a.doubleValue() * b.doubleValue() : a.longValue() * b.longValue(); }
         private static Number divide(Number a, Number b) {
             if (b.doubleValue() == 0) throw new ArithmeticException("0으로 나눌 수 없습니다");
             return a.doubleValue() / b.doubleValue();
