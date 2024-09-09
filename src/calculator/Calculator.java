@@ -100,8 +100,13 @@ public class Calculator {
     //에러 문구 처리 및 입력값 초기화
     private void handleError(Exception e){
         System.out.println(CustomDesign.ANSI_RED + "오류 발생: " + e.getMessage());
-        System.out.println("=======처음부터 다시 시작합니다======"+CustomDesign.ANSI_RESET);
-        reset();
+        if(isHistoryMode){
+            CustomDesign.printAllHistory(calculatorState);
+        }
+        else {
+            System.out.println("=======처음부터 다시 시작합니다======" + CustomDesign.ANSI_RESET);
+            reset();
+        }
     }
 
     //계산기 종료
@@ -189,9 +194,12 @@ public class Calculator {
             return true;
         }
 
-        if(isHistoryMode && "remove".equalsIgnoreCase(input)){ //history 모드에서 remove를 입력하면 가장 오래전 결과 삭제
-            handleHistoryRemove();
-            return true;
+        if(isHistoryMode){
+            if("remove".equalsIgnoreCase(input)) { //history 모드에서 remove를 입력하면 가장 오래전 결과 삭제
+                handleHistoryRemove();
+                return true;
+            }
+            else throw new IllegalArgumentException("올바른 명령어를 입력해주세요");
         }
 
         if (type.equals("operand"))

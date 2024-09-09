@@ -6,19 +6,16 @@ import java.util.regex.Pattern;
 import java.util.stream.LongStream;
 
 public class Main {
+    private static final String BASIC = "basic";
+    private static final String ADVANCED = "advanced";
+    private static final String BASIC_OPERATION_REG = "[+\\-*/]";
+    private static final String ADVANCED_OPERATION_REG = "[√^!]|\\*\\*";
     public static void main(String[] args) {
             String firstNum = "";
             String secondNum = "";
             String operation = "";
             Scanner sc = new Scanner(System.in);
-
-
-            final String BASIC_OPERATION_REG = "[+\\-*/]";
-            final String ADVANCED_OPERATION_REG = "[√^!]|\\*\\*";
-            final String BASIC = "basic";
-            final String ADVANCED = "advanced";
             String mode = BASIC;
-
 
             CustomDesign.printWelcomeMessage();
             CustomDesign.printBasicOperations();
@@ -100,7 +97,7 @@ public class Main {
 
         //모드가 고급일 경우 단항 연산자인지 확인
         private static boolean isUnaryOperation(String operation, String mode) {
-            return mode.equals("advanced") && !operation.equals("^");
+            return mode.equals(ADVANCED) && !operation.equals("^");
         }
 
         //입력 내역 출력
@@ -115,11 +112,11 @@ public class Main {
         private static boolean validateInput(String input, String type, String mode) throws IllegalArgumentException {
             if ("exit".equalsIgnoreCase(input)) throw new ExitException();
 
-            if ("advanced".equalsIgnoreCase(input)) {
+            if (ADVANCED.equalsIgnoreCase(input)) {
                 CustomDesign.printAdvancedOperations();
                 return true;
             }
-            else if ("basic".equalsIgnoreCase(input)) {
+            else if (BASIC.equalsIgnoreCase(input)) {
                 CustomDesign.printBasicOperations();
                 return true;
             }
@@ -131,10 +128,10 @@ public class Main {
                     throw new IllegalArgumentException("올바른 숫자를 입력해주세요");
                 }
             } else if ("operation".equals(type)) {
-                if (mode.equals("basic") && !Pattern.matches("[+\\-*/]", input)) {
-                    throw new IllegalStateException("올바른 기본 연산자를 입력해주세요 (기본 연산자: +, -, *, /)");
-                } else if (mode.equals("advanced") && !Pattern.matches("[√^!]|\\*\\*", input)) {
-                    throw new IllegalStateException("올바른 고급 연산자를 입력해주세요 (고급 연산자: √, ^, !, **)");
+                if (mode.equals(BASIC) && !Pattern.matches(BASIC_OPERATION_REG, input)) {
+                    throw new IllegalArgumentException("올바른 기본 연산자를 입력해주세요 (기본 연산자: +, -, *, /)");
+                } else if (mode.equals(ADVANCED) && !Pattern.matches(ADVANCED_OPERATION_REG, input)) {
+                    throw new IllegalArgumentException("올바른 고급 연산자를 입력해주세요 (고급 연산자: √, ^, !, **)");
                 }
             }
 
@@ -146,7 +143,7 @@ public class Main {
             Number a = parseNumber(firstNum);
             Number b;
 
-            if (mode.equals("basic")) {
+            if (mode.equals(BASIC)) {
                 b = parseNumber(secondNum);
                 return switch (operation) {
                     case "+" -> add(a, b);

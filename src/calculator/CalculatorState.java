@@ -55,10 +55,12 @@ public class CalculatorState {
             calculatedResults.remove(0);
         }
     }
+    //계산에 필요한 피연산자와 연산자를 입력받았는지 검증
     public boolean isReadyToCalculate(OperationStrategy operationStrategy){
         return firstNum != null
                 && operation != null && (operationStrategy.isUnary(operation) ||secondNum != null);
     }
+    //현재 입력 내역 출력
     public String toString() {
         StringBuilder sb = new StringBuilder("[입력 내역 : ");
         if (firstNum != null) sb.append(firstNum).append(" ");
