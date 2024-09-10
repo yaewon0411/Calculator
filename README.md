@@ -90,7 +90,14 @@
 
 
 
-### 기록
+### 기록 및 정리
+[계산기 리팩토링: 전략 패턴 적용 (1)](https://www.notion.so/1-06ce598a215b4c3cb37fe2e44cc3391e?pvs=4) <br>
+[계산기 리팩토링: 연산 클래스 구현 (2)](https://www.notion.so/2-14933197b6024b4191c35cf78725e6c1?pvs=4) <br>
+[계산기 리팩토링: Calculator 구현 (3)](https://www.notion.so/Calculator-3-00719280556b491c9f1acf39fb86e5b5?pvs=4) <br>
+[계산기 리팩토링: 제네릭 (4)](https://www.notion.so/4-f8f9a561410948b49242fde23fab2f71?pvs=4) <br>
+[계산기 구현하기: 입력 개행 문제](https://www.notion.so/eb64c2de5c2d45d4bc1db6fb0bf51da5?pvs=4) <br>
+
+
 #### 1) ENUM 클래스의 values()
 - enum 클래스에 자동으로 생성되는 메서드
 - enum 타입의 모든 상수를 배열로 반환 -> 즉, 해당 enum 클래스가 정의한 모든 상수들을 배열로 만들어 제공
