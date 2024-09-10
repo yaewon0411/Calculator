@@ -60,11 +60,11 @@
 - 인터페이스 분리 원칙: Operation 인터페이스를 통해 다양한 연산 구현
 
 ### 주요 메서드
-- Calculator.start(): 계산기 시작
-- Calculator.handleInput(): 사용자 입력 처리
-- Calculator.calculate(): 실제 계산 수행
-- CalculatorState.isReadyToCalculate(): 계산 준비 상태 확인
-- OperationStrategy.calculate(): 선택된 연산 전략에 따라 계산 수행
+- `Calculator.start()`: 계산기 시작
+- `Calculator.handleInput()`: 사용자 입력 처리
+- `Calculator.calculate()`: 실제 계산 수행
+- `CalculatorState.isReadyToCalculate()`: 계산 준비 상태 확인
+- `OperationStrategy.calculate()`: 선택된 연산 전략에 따라 계산 수행
 
 ## 사용 방법
 1. 프로그램 실행
