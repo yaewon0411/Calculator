@@ -1,3 +1,4 @@
+import calculator.Calculator;
 import ex.ExitException;
 import util.CustomDesign;
 
@@ -10,91 +11,100 @@ public class App {
     private static final String ADVANCED = "advanced";
     private static final String BASIC_OPERATION_REG = "[+\\-*/]"; //기본 산술 연산 정규 표현식
     private static final String ADVANCED_OPERATION_REG = "[√^!]|\\*\\*"; //고급 산술 연산 정규 표현식
+
     public static void main(String[] args) {
-            String firstNum = "";
-            String secondNum = "";
-            String operation = "";
-            Scanner sc = new Scanner(System.in);
-            String mode = BASIC;
+        start(); //클래스 없이 기본적인 연산을 수행할 수 있는 계산기
 
-            //시작 메시지 및 기본 산술 모드에서 지원하는 연산자 출력
-            CustomDesign.printWelcomeMessage();
-            CustomDesign.printBasicOperations();
+        Calculator calculator = new Calculator(); //클래스를 적용해 기본적인 연산을 수행할 수 있는 계산기
+        //calculator.start();
+    }
 
-            while (true) {
-                try {
-                    boolean modeChanged = false;
-                    printInputHistory(firstNum, operation, secondNum);
+    public static void start(){
+        String firstNum = "";
+        String secondNum = "";
+        String operation = "";
+        Scanner sc = new Scanner(System.in);
+        String mode = BASIC;
 
-                    // 첫 번째 피연산자 입력
-                    System.out.print("숫자 입력: ");
-                    firstNum = sc.nextLine();
-                    modeChanged = validateInput(firstNum, "operand", mode);
-                    if (modeChanged) {
-                        firstNum = "";
-                        secondNum = "";
-                        operation = "";
-                        if(mode.equals(BASIC)) mode = ADVANCED;
-                        else mode = BASIC;
-                        continue;
-                    }
+        //시작 메시지 및 기본 산술 모드에서 지원하는 연산자 출력
+        CustomDesign.printWelcomeMessage();
+        CustomDesign.printBasicOperations();
 
-                    printInputHistory(firstNum, operation, secondNum);
+        while (true) {
+            try {
+                boolean modeChanged = false;
+                printInputHistory(firstNum, operation, secondNum);
 
-                    // 연산자 입력
-                    System.out.print("연산자 입력: ");
-                    operation = sc.nextLine();
-                    modeChanged = validateInput(operation, "operation", mode);
-                    if (modeChanged) {
-                        firstNum = "";
-                        secondNum = "";
-                        operation = "";
-                        if(mode.equals(BASIC)) mode = ADVANCED;
-                        else mode = BASIC;
-                        continue;
-                    }
-
-                    printInputHistory(firstNum, operation, secondNum);
-
-                    // 두 번째 피연산자 입력 (이항 연산자일 경우에만)
-                    if (mode.equals(BASIC) || !isUnaryOperation(operation, mode)) {
-                        System.out.print("숫자 입력: ");
-                        secondNum = sc.nextLine();
-                        modeChanged = validateInput(secondNum, "operand", mode);
-                        if (modeChanged) {
-                            firstNum = "";
-                            secondNum = "";
-                            operation = "";
-                            if(mode.equals(BASIC)) mode = ADVANCED;
-                            else mode = BASIC;
-                            continue;
-                        }
-                        printInputHistory(firstNum, operation, secondNum);
-                    }
-
-                    //계산 수행
-                    Number result = calculate(firstNum, secondNum, operation, mode);
-                    printCalculateResult(result);
-
-
+                // 첫 번째 피연산자 입력
+                System.out.print("숫자 입력: ");
+                firstNum = sc.nextLine();
+                modeChanged = validateInput(firstNum, "operand", mode);
+                if (modeChanged) {
                     firstNum = "";
                     secondNum = "";
                     operation = "";
-                } catch (ExitException e) {
-                    break;
-                } catch (Exception e) {
-                    System.out.println(CustomDesign.ANSI_RED + "오류 발생: " + e.getMessage());
-                    System.out.println("=======처음부터 다시 시작합니다======"+CustomDesign.ANSI_RESET);
-                    firstNum = "";
-                    secondNum = "";
-                    operation = "";
+                    if(mode.equals(BASIC)) mode = ADVANCED;
+                    else mode = BASIC;
+                    continue;
                 }
-            }
 
-            //종료
-            CustomDesign.printExitMessage();
-            sc.close();
+                printInputHistory(firstNum, operation, secondNum);
+
+                // 연산자 입력
+                System.out.print("연산자 입력: ");
+                operation = sc.nextLine();
+                modeChanged = validateInput(operation, "operation", mode);
+                if (modeChanged) {
+                    firstNum = "";
+                    secondNum = "";
+                    operation = "";
+                    if(mode.equals(BASIC)) mode = ADVANCED;
+                    else mode = BASIC;
+                    continue;
+                }
+
+                printInputHistory(firstNum, operation, secondNum);
+
+                // 두 번째 피연산자 입력 (이항 연산자일 경우에만)
+                if (mode.equals(BASIC) || !isUnaryOperation(operation, mode)) {
+                    System.out.print("숫자 입력: ");
+                    secondNum = sc.nextLine();
+                    modeChanged = validateInput(secondNum, "operand", mode);
+                    if (modeChanged) {
+                        firstNum = "";
+                        secondNum = "";
+                        operation = "";
+                        if(mode.equals(BASIC)) mode = ADVANCED;
+                        else mode = BASIC;
+                        continue;
+                    }
+                    printInputHistory(firstNum, operation, secondNum);
+                }
+
+                //계산 수행
+                Number result = calculate(firstNum, secondNum, operation, mode);
+                printCalculateResult(result);
+
+
+                firstNum = "";
+                secondNum = "";
+                operation = "";
+            } catch (ExitException e) {
+                break;
+            } catch (Exception e) {
+                System.out.println(CustomDesign.ANSI_RED + "오류 발생: " + e.getMessage());
+                System.out.println("=======처음부터 다시 시작합니다======"+CustomDesign.ANSI_RESET);
+                firstNum = "";
+                secondNum = "";
+                operation = "";
+            }
         }
+
+        //종료
+        CustomDesign.printExitMessage();
+        sc.close();
+    }
+
 
         //모드가 고급일 경우 단항 연산자인지 확인
         private static boolean isUnaryOperation(String operation, String mode) {
@@ -204,7 +214,18 @@ public class App {
 
         // 결과 출력
         private static void printCalculateResult(Number result) {
-            System.out.printf(CustomDesign.ANSI_PINK+"========= 계산 결과 : %s =========\n"+CustomDesign.ANSI_RESET, result.doubleValue() == result.intValue() ? result.intValue() : result.doubleValue());
+            String formattedResult;
+            if (result instanceof Double) {
+                double doubleValue = result.doubleValue();
+                if (doubleValue == Math.floor(doubleValue) && !Double.isInfinite(doubleValue)) {
+                    formattedResult = String.format("%d", (long)doubleValue);
+                } else {
+                    formattedResult = String.format("%s", doubleValue);
+                }
+            } else {
+                formattedResult = String.format("%d", result.longValue());
+            }
+            System.out.printf(CustomDesign.ANSI_PINK+"========= 계산 결과 : %s =========\n"+CustomDesign.ANSI_RESET, formattedResult);
         }
 
 }
