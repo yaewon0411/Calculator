@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.stream.LongStream;
 
-public class Main {
+public class App {
     private static final String BASIC = "basic";
     private static final String ADVANCED = "advanced";
     private static final String BASIC_OPERATION_REG = "[+\\-*/]"; //기본 산술 연산 정규 표현식
